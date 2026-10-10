@@ -1,0 +1,717 @@
+{
+  "info": {
+    "_postman_id": "4fd24d24-6179-4fba-9384-765dcb936743",
+    "name": "CollabDocs API",
+    "description": "Postman collection for the CollabDocs Django REST API. Set baseUrl to the running server; create requests capture IDs for subsequent requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58538660"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create owner user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('userId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Jordan\",\n  \"last_name\": \"Owner\",\n  \"email\": \"jordan.owner@example.com\",\n  \"phone\": \"5551000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create member user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('memberUserId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Casey\",\n  \"last_name\": \"Member\",\n  \"email\": \"casey.member@example.com\",\n  \"phone\": \"5551000002\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{hostName}}/api/users/",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{hostName}}/api/users/{{userId}}",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Workspaces",
+      "item": [
+        {
+          "name": "Create workspace",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('workspaceId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Product Team\",\n  \"owner\": \"{{userId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{hostName}}/api/workspaces/",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List workspaces",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{hostName}}/api/workspaces/",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get workspace",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List workspace members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{hostName}}/api/workspaces/c106efc8-7a70-4695-a23c-0911f129db9b/members",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                "c106efc8-7a70-4695-a23c-0911f129db9b",
+                "members"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add workspace member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": \"{{memberUserId}}\",\n  \"role\": \"member\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get workspace summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{hostName}}/api/workspaces/{{workspaceId}}/summary/",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "workspaces",
+                "{{workspaceId}}",
+                "summary",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Create tag",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('tagId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Planning\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get tag",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{hostName}}/api/tags/{{tagId}}",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "tags",
+                "{{tagId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "Create document",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('documentId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Roadmap\",\n  \"content\": \"Initial roadmap content\",\n  \"workspace\": \"{{workspaceId}}\",\n  \"created_by\": \"{{userId}}\",\n  \"status\": \"draft\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List documents (filters optional)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "?workspace={{workspaceId}}&status=draft&tag=Planning&search=Roadmap",
+              "query": [
+                {
+                  "key": "workspace",
+                  "value": "{{workspaceId}}"
+                },
+                {
+                  "key": "status",
+                  "value": "draft"
+                },
+                {
+                  "key": "tag",
+                  "value": "Planning"
+                },
+                {
+                  "key": "search",
+                  "value": "Roadmap"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get document",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update document (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{hostName}}/api/documents/{{documentId}}/",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List document versions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add tags to document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    tags: \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{hostName}}/api/documents/{{documentId}}/tags/",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "documents",
+                "{{documentId}}",
+                "tags",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get document stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Create top-level comment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) pm.collectionVariables.set('commentId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"document\": \"{{documentId}}\",\n  \"author\": \"{{userId}}\",\n  \"content\": \"Please review this roadmap.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create reply",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"document\": \"{{documentId}}\",\n  \"author\": \"{{memberUserId}}\",\n  \"content\": \"I added my feedback.\",\n  \"parent\": \"{{commentId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List document comment threads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "?document={{documentId}}",
+              "query": [
+                {
+                  "key": "document",
+                  "value": "{{documentId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get comment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{hostName}}/api/comments/{{commentId}}",
+              "host": [
+                "{{hostName}}"
+              ],
+              "path": [
+                "api",
+                "comments",
+                "{{commentId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Audit logs",
+      "item": [
+        {
+          "name": "List audit logs by actor and date range",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const logs = pm.response.json();",
+                  "if (Array.isArray(logs) && logs.length) pm.collectionVariables.set('auditLogId', logs[0].id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "?actor_id={{userId}}&start_date=2000-01-01&end_date=2100-01-01",
+              "query": [
+                {
+                  "key": "actor_id",
+                  "value": "{{userId}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2000-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2100-01-01"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get audit log",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "?actor_id={{userId}}&start_date=2000-01-01&end_date=2100-01-01",
+              "query": [
+                {
+                  "key": "actor_id",
+                  "value": "{{userId}}"
+                },
+                {
+                  "key": "start_date",
+                  "value": "2000-01-01"
+                },
+                {
+                  "key": "end_date",
+                  "value": "2100-01-01"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "memberUserId",
+      "value": ""
+    },
+    {
+      "key": "workspaceId",
+      "value": ""
+    },
+    {
+      "key": "documentId",
+      "value": ""
+    },
+    {
+      "key": "commentId",
+      "value": ""
+    },
+    {
+      "key": "tagId",
+      "value": ""
+    },
+    {
+      "key": "auditLogId",
+      "value": ""
+    }
+  ]
+}
