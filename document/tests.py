@@ -1,6 +1,10 @@
+from unittest.mock import patch
+
+from django.db import IntegrityError
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
+from audit.models import AuditLog
 from comment.models import Comment
 from tags.models import Tag
 from user.models import User
@@ -37,6 +41,37 @@ class DocumentCreateApiTests(APITestCase):
 		self.assertEqual(version.version_number, 1)
 		self.assertEqual(version.content, document.content)
 		self.assertEqual(version.saved_by, owner)
+
+	def test_create_rolls_back_document_and_audit_log_if_version_creation_fails(self):
+		owner = User.objects.create(
+			first_name="Atomic",
+			last_name="Owner",
+			email="atomic-owner@example.com",
+			phone="1234567893",
+		)
+		workspace = Workspace.objects.create(name="Atomic Space", owner=owner)
+		audit_log_count = AuditLog.objects.count()
+		version_count = DocumentVersion.objects.count()
+
+		with patch(
+			"document.serializers.DocumentVersion.objects.create",
+			side_effect=IntegrityError("Simulated version insert failure"),
+		):
+			with self.assertRaises(IntegrityError):
+				self.client.post(
+					reverse("document-list"),
+					{
+						"title": "Atomic document",
+						"content": "This should roll back",
+						"workspace": str(workspace.id),
+						"created_by": str(owner.id),
+					},
+					format="json",
+				)
+
+		self.assertFalse(Document.objects.filter(title="Atomic document").exists())
+		self.assertEqual(DocumentVersion.objects.count(), version_count)
+		self.assertEqual(AuditLog.objects.count(), audit_log_count)
 
 	def test_put_document_updates_content_and_creates_new_version(self):
 		owner = User.objects.create(
